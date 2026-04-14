@@ -135,7 +135,7 @@ export class VikunjaClient {
    * @param params Query parameters for filtering, sorting, pagination
    */
   async getTasks(params?: TaskQueryParams): Promise<Task[]> {
-    return this.request<Task[]>('GET', '/tasks/all', undefined, params as Record<string, string | number | boolean | string[] | undefined>);
+    return this.request<Task[]>('GET', '/tasks', undefined, params as Record<string, string | number | boolean | string[] | undefined>);
   }
 
   /**
@@ -433,7 +433,7 @@ export class VikunjaClient {
       });
       query = '?' + params.toString();
     }
-    return this.request<Task[]>('GET', `/tasks/all${query}`);
+    return this.request<Task[]>('GET', `/tasks${query}`);
   }
 
   // ============================================================================
