@@ -73,11 +73,7 @@ export async function notificationDelete(client: VikunjaClient, args: unknown): 
   try {
     await client.deleteNotification(params.id);
 
-    return [
-      `Dismissed notification ID ${params.id}`,
-      '',
-      `ID: ${params.id}`,
-    ].join('\n');
+    return `Dismissed notification ID ${params.id}`;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(`Failed to delete notification: ${message}`);

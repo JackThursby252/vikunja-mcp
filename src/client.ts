@@ -450,18 +450,14 @@ export class VikunjaClient {
    * Get subscription status for an entity by reading the entity's embedded subscription field
    */
   async getSubscription(entity: string, entityId: number): Promise<Subscription | null> {
-    try {
-      if (entity === 'task') {
-        const task = await this.getTask(entityId);
-        return task.subscription ?? null;
-      } else if (entity === 'project') {
-        const project = await this.getProject(entityId);
-        return project.subscription ?? null;
-      }
-      return null;
-    } catch (error) {
-      return null;
+    if (entity === 'task') {
+      const task = await this.getTask(entityId);
+      return task.subscription ?? null;
+    } else if (entity === 'project') {
+      const project = await this.getProject(entityId);
+      return project.subscription ?? null;
     }
+    return null;
   }
 
   /**
