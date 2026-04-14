@@ -30,6 +30,7 @@ export interface Project {
   is_favorite?: boolean;
   hex_color?: string;
   position?: number;
+  subscription?: Subscription;
 }
 
 /**
@@ -113,6 +114,7 @@ export interface Task {
   is_favorite?: boolean;
   comment_count?: number;
   cover_image_attachment_id?: number;
+  subscription?: Subscription;
 }
 
 /**

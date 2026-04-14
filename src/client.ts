@@ -248,7 +248,7 @@ export class VikunjaClient {
    * Update an existing label
    */
   async updateLabel(id: number, data: Partial<LabelCreateParams>): Promise<Label> {
-    return this.request<Label>('POST', `/labels/${id}`, data);
+    return this.request<Label>('PUT', `/labels/${id}`, data);
   }
 
   /**
@@ -420,20 +420,8 @@ export class VikunjaClient {
   /**
    * Get tasks from all projects the user has access to
    */
-  async getAllTasks(queryParams?: any): Promise<Task[]> {
-    let query = '';
-    if (queryParams) {
-      const params = new URLSearchParams();
-      Object.keys(queryParams).forEach(key => {
-        if (Array.isArray(queryParams[key])) {
-          queryParams[key].forEach((val: string) => params.append(key, val));
-        } else if (queryParams[key] !== undefined) {
-          params.append(key, String(queryParams[key]));
-        }
-      });
-      query = '?' + params.toString();
-    }
-    return this.request<Task[]>('GET', `/tasks${query}`);
+  async getAllTasks(queryParams?: TaskQueryParams): Promise<Task[]> {
+    return this.request<Task[]>('GET', '/tasks', undefined, queryParams as Record<string, string | number | boolean | string[] | undefined>);
   }
 
   // ============================================================================
@@ -448,13 +436,6 @@ export class VikunjaClient {
   }
 
   /**
-   * Get a specific notification
-   */
-  async getNotification(id: number): Promise<Notification> {
-    return this.request<Notification>('GET', `/notifications/${id}`);
-  }
-
-  /**
    * Delete/dismiss a notification
    */
   async deleteNotification(id: number): Promise<void> {
@@ -466,15 +447,17 @@ export class VikunjaClient {
   // ============================================================================
 
   /**
-   * Get subscription status for an entity
+   * Get subscription status for an entity by reading the entity's embedded subscription field
    */
   async getSubscription(entity: string, entityId: number): Promise<Subscription | null> {
-    try {
-      return await this.request<Subscription>('GET', `/subscriptions/${entity}/${entityId}`);
-    } catch (error) {
-      // If not subscribed, API returns 404
-      return null;
+    if (entity === 'task') {
+      const task = await this.getTask(entityId);
+      return task.subscription ?? null;
+    } else if (entity === 'project') {
+      const project = await this.getProject(entityId);
+      return project.subscription ?? null;
     }
+    return null;
   }
 
   /**

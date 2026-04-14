@@ -70,7 +70,6 @@ import {
   tasksBulkUpdate,
   // Notifications
   notificationsList,
-  notificationGet,
   notificationDelete,
   // Subscriptions
   subscriptionGet,
@@ -295,10 +294,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       // Notification tools
       case 'notifications_list':
         result = await notificationsList(client, args ?? {});
-        break;
-
-      case 'notification_get':
-        result = await notificationGet(client, args ?? {});
         break;
 
       case 'notification_delete':

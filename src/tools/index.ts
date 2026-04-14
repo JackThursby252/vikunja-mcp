@@ -82,7 +82,6 @@ export {
 // Export all tool functions - Notifications
 export {
   notificationsList,
-  notificationGet,
   notificationDelete,
   notificationTools,
 } from './notifications.js';
